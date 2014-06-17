@@ -26,7 +26,8 @@ var EventSchema = new Schema({
     start: Date,
     end: Date,
     device_id: String,
-    data: Object
+    data: Object,
+    fn_name: String
 });
 
 /** 
