@@ -12,13 +12,13 @@ module.exports = {
 
     // The secret should be set to a non-guessable string that
     // is used to compute a session hash
-    sessionSecret: 'MEAN',
+    sessionSecret: '!MPIEventLogger_Dashboard!',
 
     // The name of the MongoDB collection to store sessions in
-    sessionCollection: 'sessions', 
+    sessionCollection: 'sessions',
 
     // The session cookie settings
-    sessionCookie: { 
+    sessionCookie: {
     	path: '/',
     	httpOnly: true,
     	// If secure is set to true then it will cause the cookie to be set

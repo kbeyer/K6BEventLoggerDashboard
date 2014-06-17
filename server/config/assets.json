@@ -15,6 +15,11 @@
                 "public/system/lib/angular-ui-router/release/angular-ui-router.js",
                 "public/system/lib/angular-bootstrap/ui-bootstrap.js",
                 "public/system/lib/angular-bootstrap/ui-bootstrap-tpls.js",
+                "public/system/lib/moment/moment.js",
+                "public/system/lib/angular-moment/angular-moment.js",
+                "public/system/lib/highcharts-release/highcharts.js",
+                "public/system/lib/highcharts-release/highcharts-more.js",
+                "public/system/lib/underscore/underscore.js",
                 "public/init.js",
                 "public/*/*.js",
                 "public/*/{controllers,routes,services}/*.js"
