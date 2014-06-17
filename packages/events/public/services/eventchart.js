@@ -28,7 +28,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
             chart = $(domSelector).highcharts({
 
                 chart: {
-                    type: 'spline',
+                    type: 'scatter',
                     events: {
                         click: delegates.click// allow create new on click
                     }
