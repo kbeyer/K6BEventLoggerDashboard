@@ -9,7 +9,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
     var chart;
 
     return {
-        addEvent: function (data, seriesId) {
+        addEvent: function (data, device, seriesId) {
             var endDt = new Date(data.end);
             var startDt = new Date(data.start);
             var duration = endDt - startDt;
@@ -19,7 +19,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
             chart.get(seriesId || 'DEBUG').addPoint({
                 id: data._id,
                 x: startDt,
-                y: Math.random()*10,
+                y: device.y,
                 z: duration || 1000
             }, true, true);
         },

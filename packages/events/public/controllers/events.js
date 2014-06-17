@@ -9,21 +9,29 @@ angular.module('mean.events').controller('EventsController',
     $scope.global = Global;
     $scope.initialSeries = ['DEBUG', 'INFO', 'WARN', 'ERROR'];
     $scope.events = [];
+    $scope.devices = [];
 
     // create base series objects
     var series = [];
-    var dtNow = new Date();
     _.each($scope.initialSeries, function(t, index){
         series.push({
-            data: [{
-                id: 'now',
-                x: dtNow,
-                y: Math.random()*10
-            }],
+            data: [],
             name: t,
             id: t
         });
     });
+
+
+    // find or add device by id
+    var findDevice = function(id) {
+        var name = id || 'Unknown';
+        var device = _.find($scope.devices, function(d){ return d.name === name; });
+        if (!device) {
+            device = {name: name, y: ($scope.devices.length+1) * 25};
+            $scope.devices.push(device);
+        }
+        return device;
+    };
 
     var chartDelegates = {
         tooltipFormatter: function(pt) {
@@ -51,6 +59,7 @@ angular.module('mean.events').controller('EventsController',
 
     $scope.find = function() {
         Events.query({
+            sort: 'start'
         }, function(events) {
 
             $scope.events = events;
@@ -62,10 +71,11 @@ angular.module('mean.events').controller('EventsController',
             _.each(events, function(e){
                 console.log(e);
                 var seriesIndex = e.log_level || 0;
+                var device = findDevice(e.device_id);
                 series[seriesIndex].data.push({
                     id: e._id,
-                    x: new Date(e.start),
-                    y: Math.random()*10
+                    x: new Date(e.start || e.created),
+                    y: device.y
                 });
 
             });
@@ -79,7 +89,7 @@ angular.module('mean.events').controller('EventsController',
                 console.log(data);
                 $scope.events.push(data);
 
-                EventChart.addEvent(data, $scope.initialSeries[data.log_level]);
+                EventChart.addEvent(data, findDevice(data.device_id), $scope.initialSeries[data.log_level]);
               // test connection to server
               //socket.emit('client event', { my: 'data' });
             });
