@@ -7,7 +7,7 @@ angular.module('mean.events').controller('EventsController',
     function ($scope, $stateParams, $location, Global, Events, EventChart, Socket) {
 
     $scope.global = Global;
-    $scope.initialSeries = ['DEBUG', 'INFO', 'WARN', 'ERROR'];
+    $scope.initialSeries = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
     $scope.events = [];
     $scope.devices = [];
 
@@ -70,9 +70,9 @@ angular.module('mean.events').controller('EventsController',
             // add placeholder for counts
             _.each(events, function(e){
                 console.log(e);
-                var seriesIndex = e.log_level || 0;
+                var seriesIndex = e.log_level || 1;
                 var device = findDevice(e.device_id);
-                series[seriesIndex].data.push({
+                series[seriesIndex-1].data.push({
                     id: e._id,
                     x: new Date(e.start || e.created),
                     y: device.y
@@ -89,7 +89,8 @@ angular.module('mean.events').controller('EventsController',
                 console.log(data);
                 $scope.events.push(data);
 
-                EventChart.addEvent(data, findDevice(data.device_id), $scope.initialSeries[data.log_level]);
+                var seriesIndex = data.log_level || 1;
+                EventChart.addEvent(data, findDevice(data.device_id), $scope.initialSeries[seriesIndex-1]);
               // test connection to server
               //socket.emit('client event', { my: 'data' });
             });
