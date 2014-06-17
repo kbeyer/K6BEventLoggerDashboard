@@ -1,0 +1,18 @@
+<section data-ng-controller="EventsController" data-ng-init="find()">
+    <div class="header-row">
+      <div class="pull-left">
+        <h2 class="page-title">Dashboard</h2>
+      </div>
+    </div>
+
+    <div id="eventChart"></div>
+
+    <ul class="events unstyled">
+        <li class="col-md-4" data-ng-repeat="evt in events">
+          <div class="inner">
+            <h2><a data-ng-href="#!/events/{{evt._id}}">{{evt.description}}</a></h2>
+          </div>
+        </li>
+    </ul>
+
+</section>

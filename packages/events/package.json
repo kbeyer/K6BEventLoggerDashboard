@@ -1,0 +1,17 @@
+{
+  "name": "events",
+  "version": "0.0.1",
+  "description": "MPIEventLogger visualization",
+  "author": {
+    "name": "Kyle Beyer <kyle.beyer@gmail.com>"
+  },
+  "mean" : "0.3.3",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.4.x"
+  },
+  "dependencies": {
+    "express-restify-mongoose": "^0.6.7"
+  },
+  "license": "MIT"
+}
