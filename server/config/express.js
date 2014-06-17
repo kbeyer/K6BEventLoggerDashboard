@@ -73,11 +73,11 @@ module.exports = function(app, passport, db) {
 
     // Import the assets file and add to locals
     app.use(function(req, res, next) {
-    	res.locals.assets = assetmanager.process({
-    	    assets: assets,
-    	    debug: process.env.NODE_ENV !== 'production',
-    	    webroot: 'public/public'
-    	});
+        res.locals.assets = assetmanager.process({
+            assets: assets,
+            debug: process.env.NODE_ENV !== 'production',
+            webroot: 'public/public'
+        });
         next();
     });
 

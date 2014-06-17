@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+    appPath = process.cwd(),
+    socketManager = require(appPath + '/server/config/socketio'),
     Schema = mongoose.Schema;
 
 
@@ -18,7 +20,7 @@ var EventSchema = new Schema({
     },
     updated: Date,
     source: String,
-    logLevel: Number,
+    log_level: Number,
     tags: Array,
     description: String,
     start: Date,
@@ -32,6 +34,8 @@ var EventSchema = new Schema({
  */
 EventSchema.pre('save', function(next) {
     this.updated = Date.now;
+    console.log('EventSchema preSave');
+    socketManager.emit('event', this);
     next();
 });
 
