@@ -12,7 +12,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
                         'rgba(91,192,222,0.8)'];
     var rowPadding = 2;
     var padding = 10;
-    var xAxis, yAxis, svgCanvas, d3SelectedElement;
+    var xAxis, yAxis, svgCanvas, d3SelectedElement, axisSvg;
     var devices = [];
     // find or add device by id
     var findDevice = function(id) {
@@ -69,7 +69,9 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
         // refresh chart from data
         refresh: function(data, delegates) {
             // use existing svg canvas to render data
-            xAxis.domain(d3.extent(data, xAxisValFn));
+            var xMax = d3.max(data, xAxisValFn);
+            var xMin = new Date(xMax.getTime() - (1000*60));
+            xAxis.domain([xMin, xMax]);
             yAxis.domain(d3.extent(data, yAxisValFn));
 
             var boxes = svgCanvas.selectAll('rect.event').data(data, keyFn);
@@ -95,6 +97,34 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
 
             boxes.exit()
              .remove();
+
+            // milliseconds to 'mm:ss' converter
+            var formatMilliseconds = function (dt, zeroPad) {
+                if(dt === undefined) { return 'n/a'; }
+                var minutes = dt.getMinutes();
+                if (zeroPad && minutes < 10) { minutes = '0' + minutes; }
+                var seconds = dt.getSeconds();
+                if (seconds < 0) { seconds = 0; }
+                if (zeroPad && seconds < 10) { seconds = '0' + seconds; }
+                return [minutes,seconds].join(':');
+            };
+
+            var xAxisSvg = d3.svg.axis()
+                          .scale(xAxis)
+                          .orient('top')
+                          .ticks(12)
+                          .tickFormat(function(d){ return formatMilliseconds(d, true); });
+
+            var axisHeight = 30;
+            var chartWidth = $('#eventChart').width();
+            // show axis at the top                
+            d3.select('#eventChart').append('svg')
+                .attr('class', 'x axis')
+                .attr('width', chartWidth)
+                .attr('height', axisHeight)
+              .append('g')
+                .attr('transform', 'translate(0,30)')
+                .call(xAxisSvg);
         },
         init: function (domSelector, delegates) {
             var axisHeight = 30;
@@ -107,14 +137,11 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
             yAxis = d3.scale.linear()
                 .range([chartHeight - padding, padding]);
 
-            // show axis at the top                
+            // placeholder for axis at the top
             d3.select(domSelector).append('svg')
                 .attr('class', 'x axis')
                 .attr('width', chartWidth)
-                .attr('height', axisHeight)
-              .append('g')
-                .attr('transform', 'translate(' + padding + ',0)')
-                .call(xAxis);
+                .attr('height', axisHeight);
 
             // boxes canvas next
             svgCanvas = d3.select(domSelector).append('svg:svg')

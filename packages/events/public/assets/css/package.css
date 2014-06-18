@@ -67,6 +67,11 @@ div.name {
 }
 
 /* event chart */
+#eventChart .x.axis {
+  position: absolute;
+  top: 0;
+}
+
 #eventChart .axis path{
   fill: none;
   stroke: none;
