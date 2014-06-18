@@ -10,9 +10,10 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
                         'rgba(240,173,78,0.8)',
                         'rgba(217,83,70,0.8)',
                         'rgba(91,192,222,0.8)'];
-    var rowPadding = 2;
+    var rowHeight = 50;
+    var rowPadding = 5;
     var padding = 10;
-    var xAxis, yAxis, svgCanvas, d3SelectedElement, axisSvg;
+    var xAxis, yAxis, svgCanvas, d3SelectedElement;
     var devices = [];
     // find or add device by id
     var findDevice = function(id) {
@@ -24,14 +25,14 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
         }
         return device;
     };
+    var timeFormat = d3.time.format('%X');
+
     // axis values from data object
     var keyFn = function(d){ return d._id; };
     var xAxisValFn = function(d){ return new Date(d.start || d.created); };
-    var yAxisValFn = function(d){ return findDevice(d.device_id).y; };
+    //var yAxisValFn = function(d){ return findDevice(d.device_id).y; };
+    var yAxisValFn = function(d){ return (findDevice(d.device_id).y * rowHeight) + rowPadding; };
     var fillFn = function(d){ return logLevelColors[d.log_level]; };
-    var heightValFn = function(d){
-        return yAxis(findDevice(d.device_id).y) - rowPadding;
-    };
     var widthValFn = function(d){
         var endDt = new Date(d.end || d.start || d.created);
         var startDt = new Date(d.start || d.created);
@@ -78,7 +79,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
 
             boxes.transition()
              .attr('x', function(d) { return xAxis(xAxisValFn(d)); })
-             .attr('y', function(d) { return (findDevice(d.device_id).y * 50) + 5; });//yAxis(yAxisValFn(d)); });
+             .attr('y', function(d) { return yAxisValFn(d); });
 
             boxes.enter()
              .append('svg:rect')
@@ -87,7 +88,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
               .attr('height', 50)
               .attr('width', widthValFn)
               .attr('x', function(d) { return xAxis(xAxisValFn(d)); })
-              .attr('y', function(d) { return (findDevice(d.device_id).y * 50) + 5; })// yAxis(yAxisValFn(d)); })
+              .attr('y', function(d) { return yAxisValFn(d); })
               .attr('fill', fillFn)
               .attr('stroke', '#ccc')
               .attr('opacity', 0.6)// draw with initial opacity same as mouseout
@@ -98,22 +99,11 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
             boxes.exit()
              .remove();
 
-            // milliseconds to 'mm:ss' converter
-            var formatMilliseconds = function (dt, zeroPad) {
-                if(dt === undefined) { return 'n/a'; }
-                var minutes = dt.getMinutes();
-                if (zeroPad && minutes < 10) { minutes = '0' + minutes; }
-                var seconds = dt.getSeconds();
-                if (seconds < 0) { seconds = 0; }
-                if (zeroPad && seconds < 10) { seconds = '0' + seconds; }
-                return [minutes,seconds].join(':');
-            };
-
             var xAxisSvg = d3.svg.axis()
                           .scale(xAxis)
                           .orient('top')
                           .ticks(12)
-                          .tickFormat(function(d){ return formatMilliseconds(d, true); });
+                          .tickFormat(function(dt){ return timeFormat(dt); });
 
             var axisHeight = 30;
             var chartWidth = $('#eventChart').width();
