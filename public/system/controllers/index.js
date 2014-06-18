@@ -5,6 +5,6 @@ angular.module('mean.system').controller('IndexController', ['$scope', '$locatio
 
     $scope.init = function() {
         // go to events by default
-        $location.url('/event');
+        $location.url('/events');
     };
 }]);

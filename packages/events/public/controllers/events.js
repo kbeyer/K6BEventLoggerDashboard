@@ -1,15 +1,15 @@
 'use strict';
 
-/* global _ */
+/* global _, d3 */
 
 angular.module('mean.events').controller('EventsController',
-    ['$scope', '$stateParams', '$location', 'Global', 'Events', 'EventChart', 'Socket',
-    function ($scope, $stateParams, $location, Global, Events, EventChart, Socket) {
+    ['$rootScope', '$scope', '$stateParams', '$location', 'Global', 'Events', 'EventChart', 'Socket',
+    function ($rootScope, $scope, $stateParams, $location, Global, Events, EventChart, Socket) {
 
     $scope.global = Global;
     $scope.initialSeries = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
     $scope.events = [];
-    $scope.devices = [];
+    $rootScope.devices = [];
 
     // create base series objects
     var series = [];
@@ -21,39 +21,41 @@ angular.module('mean.events').controller('EventsController',
         });
     });
 
+    var d3TooltipSelector = '.eventChartTooltip';
+    var d3ChartDelegates = {
+        mouseover: function(d){
+            var updateTooltip = function(d){
+                d3.select(d3TooltipSelector).html(
+                    '<u>' + new Date(d.start) +
+                    '</u>'+
+                    '<p>' + d.description + '</p>');
+            };
+            updateTooltip(d);
 
-    // find or add device by id
-    var findDevice = function(id) {
-        var name = id || 'Unknown';
-        var device = _.find($scope.devices, function(d){ return d.name === name; });
-        if (!device) {
-            device = {name: name, y: ($scope.devices.length+1) * 25};
-            $scope.devices.push(device);
-        }
-        return device;
-    };
+            d3.select(this)
+              .attr('opacity', 1);
 
-    var chartDelegates = {
-        tooltipFormatter: function(pt) {
-            var header = '';
-            
-            var evt = _.find($scope.events, function(e){ return e._id === pt.point.id; });
+            var leftPos = d3.event.pageX - 130;
 
-            var contentLabel = '<p style="font-style:italic;">WARNING: Event not found.</p><br/>';
-            var footer = '';
-            var timeLabel = '';
-
-            // require an element to print content
-            if (evt) {
-                var content = evt.description.substr(0,140);
-                if (evt.description.length > 140) { content += '..'; }
-                contentLabel = '<span style="font-style:italic;"><span>' + content.replace('\n', '<br/>') + '</span></span><br/>';
-                footer = '<div style="font-size: 10px">' + evt.source + '</div>';
-                footer += '<div style="font-size: 10px">[#' + evt.tags.join(', #') + ']</div>';
-                
+            d3.select(d3TooltipSelector)
+                .style('left', leftPos + 'px')
+                .style('top', (d3.event.pageY + 5) + 'px')
+                .transition().duration(300)
+                .style('opacity', 1)
+                .style('display', 'block');
+        },
+        mouseout: function(d){
+            if (!d.selected) {
+                d3.select(this)
+                  .attr('opacity', 0.6);
             }
 
-            return header + timeLabel + contentLabel + footer;
+            d3.select(d3TooltipSelector)
+                .transition().duration(700).style('opacity', 0);
+        },
+        click: function(d){
+            // update colors
+            EventChart.select(d);
         }
     };
 
@@ -64,35 +66,16 @@ angular.module('mean.events').controller('EventsController',
 
             $scope.events = events;
 
-            //var shift = series.data.length > 20; // shift if the series is 
-                                                 // longer than 20
 
-            // add placeholder for counts
-            _.each(events, function(e){
-                console.log(e);
-                var seriesIndex = e.log_level || 1;
-                var device = findDevice(e.device_id);
-                series[seriesIndex-1].data.push({
-                    id: e._id,
-                    x: new Date(e.start || e.created),
-                    y: device.y
-                });
-
-            });
-
-
-            var chart = EventChart.setup('#eventChart', series, chartDelegates);
-            chart.hideLoading();
+            EventChart.init('#eventChart', d3ChartDelegates);
+            EventChart.refresh(events, d3ChartDelegates);
 
             // bind to socket
             Socket.on('event', function (data) {
                 console.log(data);
                 $scope.events.push(data);
 
-                var seriesIndex = data.log_level || 1;
-                EventChart.addEvent(data, findDevice(data.device_id), $scope.initialSeries[seriesIndex-1]);
-              // test connection to server
-              //socket.emit('client event', { my: 'data' });
+                EventChart.refresh($scope.events, d3ChartDelegates);
             });
         });
     };

@@ -1,6 +1,52 @@
+.content {
+  margin: 0;
+}
+
+.left-col {
+  float: left;
+  width: 20%;
+  height: 100%;
+}
+.right-col {
+  float: left;
+  width: 80%;
+}
 
 .chart-default {
-  height: 500px; 
+  height: 100%; 
   width: 100%; 
   margin: 0 auto;
+}
+
+.scroll-wrap {
+  overflow: auto;
+  height: 800px;
+}
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-right: solid 1px #eee;
+}
+
+.events li {
+  list-style: none;
+  list-style-position: outside;
+  border-bottom: solid 1px #eee;
+}
+
+.events li .inner {
+  padding: 5px;
+}
+
+.eventChartTooltip {
+  position: absolute;
+  width: 150px;
+  padding: 8px;
+  font: 12px sans-serif;
+  background: #aaa;
+  border: solid 1px #666;
+  border-radius: 1px;
+  pointer-events: none;
+  display: none;
 }
