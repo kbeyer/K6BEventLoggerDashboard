@@ -30,8 +30,11 @@ angular.module('mean.events').controller('EventsController',
     var d3ChartDelegates = {
         mouseover: function(d){
             var updateTooltip = function(d){
+                var endDt = new Date(d.end);
+                var startDt = new Date(d.start);
+                var duration = (endDt - startDt)/1000;
                 d3.select(d3TooltipSelector).html(
-                    '<u>' + new Date(d.start) +
+                    '<u>' + startDt.toTimeString() + ' [' + duration + 's]' +
                     '</u>'+
                     '<p>' + d.description + '</p>');
             };
