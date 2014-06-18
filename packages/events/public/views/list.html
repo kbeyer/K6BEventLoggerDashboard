@@ -1,24 +1,24 @@
 <section data-ng-controller="EventsController" data-ng-init="find()">
-    <div class="left-col scroll-wrap">
-      <ul class="events unstyled">
-          <li data-ng-repeat="evt in events | orderBy:'start':true">
-            <div class="inner">
-              <div id="{{evt._id}}">
-                <p>{{evt.description}}</p>
-                <div class="source">{{evt.source}}</div>
-                <div class="device">{{evt.device_id}}</div>
-              </div>
-            </div>
-          </li>
-      </ul>
-    </div>
-    <div class="right-col">
+    <div class="left-col">      
       <ul class="device-names">
         <li data-ng-repeat="device in devices">
           <div class="name">{{device.name}}</div>
         </li>
       </ul>
       <div id="eventChart" class="chart-default"></div>
+    </div>
+    <div class="right-col scroll-wrap">
+      <ul class="events unstyled">
+          <li data-ng-repeat="evt in events | orderBy:'start':true">
+            <div class="inner">
+              <div id="{{evt._id}}">
+                <div class="description">{{evt.description}}</div>
+                <div class="source">{{evt.source}}</div>
+                <div class="device">{{evt.device_id}}</div>
+              </div>
+            </div>
+          </li>
+      </ul>
     </div>
 
 

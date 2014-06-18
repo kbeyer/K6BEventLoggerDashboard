@@ -4,12 +4,13 @@
 
 .left-col {
   float: left;
-  width: 20%;
+  width: 80%;
   height: 100%;
 }
 .right-col {
   float: left;
-  width: 80%;
+  width: 20%;
+  height: 100%;
 }
 
 .chart-default {
@@ -28,7 +29,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-right: solid 1px #eee;
+  border-left: solid 1px #eee;
 }
 
 .events li {
@@ -39,6 +40,20 @@
 
 .events li .inner {
   padding: 5px;
+}
+.events .description {
+  font-size: 13px;
+  color: #aaa;
+}
+.events .source {
+  font-size: 10px;
+  font-style: italic;
+  color: #888;
+}
+.events .device {
+  font-size: 10px;
+  font-style: italic;
+  color: #666;
 }
 
 .device-names {
@@ -78,6 +93,9 @@ div.name {
   shape-rendering: crispEdges;
 }
 
+#eventChart .axis text {
+  fill: #aaa;
+}
 #eventChart .axis line {
   fill: none;
   stroke: #aaa;
