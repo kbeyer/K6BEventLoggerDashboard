@@ -86,7 +86,8 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
               .attr('stroke', '#ccc')
               .attr('opacity', 0.6)// draw with initial opacity same as mouseout
               .on('mouseover', delegates.mouseover)
-              .on('mouseout', delegates.mouseout);
+              .on('mouseout', delegates.mouseout)
+              .on('click', delegates.click);
 
             boxes.exit()
              .remove();

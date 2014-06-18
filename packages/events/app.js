@@ -24,7 +24,7 @@ Events.register(function(app, auth, database) {
     });
 
     Events.aggregateAsset('css', 'package.css');
-    Events.aggregateAsset('js', 'highcharts-theme.js');
+    Events.aggregateAsset('js', 'd3.js');
 
     return Events;
 });

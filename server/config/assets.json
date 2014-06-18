@@ -18,8 +18,6 @@
                 "public/system/lib/moment/moment.js",
                 "public/system/lib/angular-moment/angular-moment.js",
                 "public/system/lib/d3/d3.js",
-                "public/system/lib/highcharts-release/highcharts.js",
-                "public/system/lib/highcharts-release/highcharts-more.js",
                 "public/system/lib/underscore/underscore.js",
                 "public/init.js",
                 "public/*/*.js",
