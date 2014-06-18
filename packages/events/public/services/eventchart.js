@@ -117,6 +117,8 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
 
             var axisHeight = 30;
             var chartWidth = $('#eventChart').width();
+            // clear first
+            $('.x.axis').remove();
             // show axis at the top                
             d3.select('#eventChart').append('svg')
                 .attr('class', 'x axis')
