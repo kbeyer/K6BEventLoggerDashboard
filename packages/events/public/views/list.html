@@ -13,6 +13,11 @@
       </ul>
     </div>
     <div class="right-col">
+      <ul class="device-names">
+        <li data-ng-repeat="device in devices">
+          <div class="name">{{device.name}}</div>
+        </li>
+      </ul>
       <div id="eventChart" class="chart-default"></div>
     </div>
 

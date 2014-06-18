@@ -21,6 +21,11 @@ angular.module('mean.events').controller('EventsController',
         });
     });
 
+    var intelliApply = function(fn){
+        if (!$scope.$$phase){ fn(); }
+        else{ fn(); }
+    };
+
     var d3TooltipSelector = '.eventChartTooltip';
     var d3ChartDelegates = {
         mouseover: function(d){
@@ -61,21 +66,26 @@ angular.module('mean.events').controller('EventsController',
 
     $scope.find = function() {
         Events.query({
+            limit: 25,
             sort: 'start'
         }, function(events) {
 
             $scope.events = events;
 
-
             EventChart.init('#eventChart', d3ChartDelegates);
             EventChart.refresh(events, d3ChartDelegates);
+
+            $scope.devices = EventChart.devices;
 
             // bind to socket
             Socket.on('event', function (data) {
                 console.log(data);
-                $scope.events.push(data);
-
-                EventChart.refresh($scope.events, d3ChartDelegates);
+                intelliApply(function(){
+                    $scope.events.push(data);
+                    EventChart.refresh($scope.events, d3ChartDelegates);
+                    $scope.devices = EventChart.devices;
+                    EventChart.select(data);
+                });
             });
         });
     };

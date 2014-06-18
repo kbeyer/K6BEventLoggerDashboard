@@ -16,6 +16,8 @@
   height: 100%; 
   width: 100%; 
   margin: 0 auto;
+  position: relative;
+  z-index: 100;
 }
 
 .scroll-wrap {
@@ -39,6 +41,19 @@
   padding: 5px;
 }
 
+.device-names {
+  list-style: none;
+  position: absolute;
+  top: 90px;
+}
+div.name {
+  font-size: 24px;
+  color: #ddd;
+  z-index: 10;
+  opacity: 0.8;
+  line-height: 55px;
+}
+
 .eventChartTooltip {
   position: absolute;
   width: 150px;
@@ -48,5 +63,27 @@
   border: solid 1px #666;
   border-radius: 1px;
   pointer-events: none;
+  display: none;
+}
+
+/* event chart */
+#eventChart .axis path{
+  fill: none;
+  stroke: none;
+  shape-rendering: crispEdges;
+}
+
+#eventChart .axis line {
+  fill: none;
+  stroke: #aaa;
+  shape-rendering: crispEdges;
+}
+
+#eventChart path {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+#eventChart .x.axis path {
   display: none;
 }
