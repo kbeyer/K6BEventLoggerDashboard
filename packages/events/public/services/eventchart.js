@@ -36,7 +36,8 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
     var widthValFn = function(d){
         var endDt = new Date(d.end || d.start || d.created);
         var startDt = new Date(d.start || d.created);
-        var width = (xAxis(endDt) - xAxis(startDt)) || 5;// default to 10px width
+        var width = (xAxis(endDt) - xAxis(startDt)) || 5;// default to 5px width
+        if (width <= 0) { width = 5; }
         return width;
     };
 

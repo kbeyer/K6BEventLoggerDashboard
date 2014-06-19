@@ -85,6 +85,7 @@ div.name {
 #eventChart .x.axis {
   position: absolute;
   top: 0;
+  left: 0;
 }
 
 #eventChart .axis path{
