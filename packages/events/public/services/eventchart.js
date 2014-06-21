@@ -6,10 +6,6 @@
 angular.module('mean.events').factory('EventChart', ['$rootScope', function($rootScope) {
 
     // setup chart size and defaults
-    var logLevelColors = ['rgba(92,184,92,0.8)',
-                        'rgba(240,173,78,0.8)',
-                        'rgba(217,83,70,0.8)',
-                        'rgba(91,192,222,0.8)'];
     var rowHeight = 50;
     var rowPadding = 5;
     var padding = 10;
@@ -32,13 +28,16 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
     var xAxisValFn = function(d){ return new Date(d.start || d.created); };
     //var yAxisValFn = function(d){ return findDevice(d.device_id).y; };
     var yAxisValFn = function(d){ return (findDevice(d.device_id).y * rowHeight) + rowPadding; };
-    var fillFn = function(d){ return logLevelColors[d.log_level]; };
     var widthValFn = function(d){
         var endDt = new Date(d.end || d.start || d.created);
         var startDt = new Date(d.start || d.created);
         var width = (xAxis(endDt) - xAxis(startDt)) || 5;// default to 5px width
         if (width <= 0) { width = 5; }
         return width;
+    };
+    var eventClassesFn = function (d) {
+        var logLevelClass = 'loglevel' + (d.logLevel || 2);
+        return 'event ' + logLevelClass;
     };
 
     var updateSelectedBand = function(d) {
@@ -55,15 +54,10 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
         select: function(d) {
             if (!xAxis) { return false; }
             if (d3SelectedElement) {
-                d3SelectedElement
-                .attr('stroke', '#ccc')
-                .attr('stroke-width', 1)
-                .attr('opacity', 0.6);
+                d3SelectedElement.classed({'selected': false});
             }
             var d3box = d3.select('[data-id="' + d._id + '"]');
-            d3box.attr('stroke', 'yellow')
-                .attr('stroke-width', 2)
-                .attr('opacity', 1);
+            d3box.classed({'selected': true});
             d3SelectedElement = d3box;
 
             updateSelectedBand(d);
@@ -84,15 +78,12 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
 
             boxes.enter()
              .append('svg:rect')
-              .attr('class', 'event')
+              .attr('class', eventClassesFn)
               .attr('data-id', keyFn)
-              .attr('height', 50)
+              .attr('height', rowHeight)
               .attr('width', widthValFn)
               .attr('x', function(d) { return xAxis(xAxisValFn(d)); })
               .attr('y', function(d) { return yAxisValFn(d); })
-              .attr('fill', fillFn)
-              .attr('stroke', '#ccc')
-              .attr('opacity', 0.6)// draw with initial opacity same as mouseout
               .on('mouseover', delegates.mouseover)
               .on('mouseout', delegates.mouseout)
               .on('click', delegates.click);

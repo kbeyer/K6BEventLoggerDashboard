@@ -111,3 +111,31 @@ div.name {
 #eventChart .x.axis path {
   display: none;
 }
+
+#eventChart .event {
+  stroke: #ccc;
+  stroke-width: 1;
+  opacity: 0.6;
+}
+#eventChart .event.mouseover {
+  stroke: #aaa;
+  stroke-width: 2;
+  opacity: 1;
+}
+#eventChart .event.selected {
+  stroke: yellow;
+  stroke-width: 2;
+  opacity: 1;
+}
+#eventChart .event.loglevel1 {
+  fill: rgba(92,184,92,0.8);
+}
+#eventChart .event.loglevel2 {
+  fill: rgba(240,173,78,0.8);
+}
+#eventChart .event.loglevel3 {
+  fill: rgba(217,83,70,0.8);
+}
+#eventChart .event.loglevel1 {
+  fill: rgba(91,192,222,0.8);
+}

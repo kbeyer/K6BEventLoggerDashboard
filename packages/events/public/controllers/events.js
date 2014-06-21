@@ -29,23 +29,18 @@ angular.module('mean.events').controller('EventsController',
     var d3TooltipSelector = '.eventChartTooltip';
     var d3ChartDelegates = {
         mouseover: function(d){
-            var updateTooltip = function(d){
-                var endDt = new Date(d.end);
-                var startDt = new Date(d.start);
-                var duration = (endDt - startDt)/1000;
-                d3.select(d3TooltipSelector).html(
-                    '<u>' + startDt.toTimeString() + ' [' + duration + 's]' +
-                    '</u>'+
-                    '<p>' + d.description + '</p>');
-            };
-            updateTooltip(d);
 
-            d3.select(this)
-              .attr('opacity', 1);
+            d3.select(this).classed({'mouseover':true});
 
             var leftPos = d3.event.pageX - 130;
-
+            var endDt = new Date(d.end);
+            var startDt = new Date(d.start);
+            var duration = (endDt - startDt)/1000;
             d3.select(d3TooltipSelector)
+                .html(
+                    '<u>' + startDt.toTimeString() + ' [' + duration + 's]' +
+                    '</u>'+
+                    '<p>' + d.description + '</p>')
                 .style('left', leftPos + 'px')
                 .style('top', (d3.event.pageY + 5) + 'px')
                 .transition().duration(300)
@@ -53,10 +48,8 @@ angular.module('mean.events').controller('EventsController',
                 .style('display', 'block');
         },
         mouseout: function(d){
-            if (!d.selected) {
-                d3.select(this)
-                  .attr('opacity', 0.6);
-            }
+
+            d3.select(this).classed({'mouseover':false});
 
             d3.select(d3TooltipSelector)
                 .transition().duration(700).style('opacity', 0);
