@@ -34,8 +34,8 @@ angular.module('mean.events').controller('EventsController',
             d3.select(this).classed({'mouseover':true});
 
             var leftPos = d3.event.pageX - 10;
-            var endDt = new Date(d.end);
-            var startDt = new Date(d.start);
+            var endDt = new Date(d.end || d.start || d.created);
+            var startDt = new Date(d.start || d.created);
             var duration = (endDt - startDt);
             d3.select(d3TooltipSelector)
                 .html(
@@ -64,7 +64,7 @@ angular.module('mean.events').controller('EventsController',
     $scope.find = function() {
         Events.query({
             limit: 25,
-            sort: 'start'
+            sort: '-created'
         }, function(events) {
 
             $scope.events = events;

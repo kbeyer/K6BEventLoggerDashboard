@@ -27,6 +27,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
     // axis values from data object
     var keyFn = function(d){ return d._id; };
     var xAxisValFn = function(d){ return new Date(d.start || d.created); };
+    var xMaxValFn = function(d){ return new Date(d.end || d.start || d.created); };
     //var yAxisValFn = function(d){ return findDevice(d.device_id).y; };
     var yAxisValFn = function(d){ return (findDevice(d.device_id).y * rowHeight) + rowPadding; };
     var widthValFn = function(d){
@@ -66,7 +67,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
         // refresh chart from data
         refresh: function(data, delegates) {
             // use existing svg canvas to render data
-            var xMax = d3.max(data, xAxisValFn);
+            var xMax = d3.max(data, xMaxValFn);
             var xMin = new Date(xMax.getTime() - (1000*defaultMaxSeconds));//30s window
             xAxis.domain([xMin, xMax]);
             yAxis.domain(d3.extent(data, yAxisValFn));
