@@ -79,6 +79,7 @@ div.name {
   border-radius: 1px;
   pointer-events: none;
   display: none;
+  z-index: 101;
 }
 
 /* event chart */

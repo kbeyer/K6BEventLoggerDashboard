@@ -6,6 +6,7 @@
 angular.module('mean.events').factory('EventChart', ['$rootScope', function($rootScope) {
 
     // setup chart size and defaults
+    var defaultMaxSeconds = 30;
     var rowHeight = 50;
     var rowPadding = 5;
     var padding = 10;
@@ -66,7 +67,7 @@ angular.module('mean.events').factory('EventChart', ['$rootScope', function($roo
         refresh: function(data, delegates) {
             // use existing svg canvas to render data
             var xMax = d3.max(data, xAxisValFn);
-            var xMin = new Date(xMax.getTime() - (1000*60));
+            var xMin = new Date(xMax.getTime() - (1000*defaultMaxSeconds));//30s window
             xAxis.domain([xMin, xMax]);
             yAxis.domain(d3.extent(data, yAxisValFn));
 

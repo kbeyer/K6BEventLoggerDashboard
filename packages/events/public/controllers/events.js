@@ -27,24 +27,25 @@ angular.module('mean.events').controller('EventsController',
     };
 
     var d3TooltipSelector = '.eventChartTooltip';
+    var timeFormat = d3.time.format('%H:%M:%S.%L');
     var d3ChartDelegates = {
         mouseover: function(d){
 
             d3.select(this).classed({'mouseover':true});
 
-            var leftPos = d3.event.pageX - 130;
+            var leftPos = d3.event.pageX - 10;
             var endDt = new Date(d.end);
             var startDt = new Date(d.start);
-            var duration = (endDt - startDt)/1000;
+            var duration = (endDt - startDt);
             d3.select(d3TooltipSelector)
                 .html(
-                    '<u>' + startDt.toTimeString() + ' [' + duration + 's]' +
+                    '<u>' + timeFormat(startDt) + ' [' + duration + 'ms]' +
                     '</u>'+
                     '<p>' + d.description + '</p>')
                 .style('left', leftPos + 'px')
                 .style('top', (d3.event.pageY + 5) + 'px')
                 .transition().duration(300)
-                .style('opacity', 1)
+                .style('opacity', 0.8)
                 .style('display', 'block');
         },
         mouseout: function(d){
