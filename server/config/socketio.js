@@ -21,7 +21,20 @@ SocketManager.prototype.init = function (server) {
         s.emit('news', { listening: 'true' });
         // save reference for later binding
         me.socket = s;
+
+        s.on('addnode', function (s) {
+            console.log('addnode');
+            me.socket.emit('addnode', JSON.stringify({id: Math.round(Math.random()*1000)}));
+        });
+
+        s.on('addlink', function (d) {
+            console.log('addlink: ' + d);
+        });
+
     });
+
+    // handle messages from clients
+
 };
 
 SocketManager.prototype.on = function (eventName, callback) {

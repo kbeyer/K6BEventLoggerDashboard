@@ -1,0 +1,29 @@
+
+<section data-ng-controller="NodesController" data-ng-init="init()">
+
+  <button ng-click="nodeButtonClick()">New node</button>
+  <button ng-click="linkButtonClick()">{{$scope.status[0] === 'link' ? 'Stop Linking' : 'Link'}}</button>
+  <button ng-click="messageButtonClick()"
+          ng-disabled="$scope.status[0] === 'message'">Message</button>
+  
+  <div class="left-col">
+    <div id="nodesChart" class="chart-default"></div>
+  </div>
+  
+  <div class="right-col scroll-wrap">
+    <ul class="events unstyled">
+        <li data-ng-repeat="evt in events | orderBy:'start':true">
+          <div class="inner">
+            <div id="{{evt._id}}">
+              <div class="description">{{evt.description}}</div>
+              <div class="source">{{evt.source}}</div>
+              <div class="device">{{evt.device_id}}</div>
+            </div>
+          </div>
+        </li>
+    </ul>
+  </div>
+
+
+  <div class="chartTooltip"></div>
+</section>

@@ -32,6 +32,13 @@ angular.module('mean.events').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
+            .state('node viz    ', {
+                url: '/nodes',
+                templateUrl: 'events/views/nodes.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
             .state('create app', {
                 url: '/events/create',
                 templateUrl: 'events/views/create.html',
