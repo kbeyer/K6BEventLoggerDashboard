@@ -33,6 +33,8 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
 
     var exposed = {
         addNode: function(d) {
+            d.id = d.id || d.node_id;
+            
             for(var i=0; i<nodes.length; i++){
                 if(nodes[i].id === d.id){
                     console.log('node ' + d.id + ' already exists, not adding');

@@ -140,3 +140,31 @@ div.name {
 #eventChart .event.loglevel1 {
   fill: rgba(91,192,222,0.8);
 }
+
+#nodesChart rect {
+  fill: none;
+  pointer-events: all;
+}
+
+#nodesChart .node {
+  fill: #aaa;
+}
+
+#nodesChart .cursor {
+  fill: none;
+  stroke: brown;
+  pointer-events: none;
+}
+
+#nodesChart .link {
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+body {
+  background: #000;
+}
+
+body.connected {
+  background: #443344;
+}

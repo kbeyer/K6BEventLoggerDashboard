@@ -89,6 +89,18 @@ angular.module('mean.events').controller('NodesController',
             console.log('addlink: ' + data);
             NodeChart.addLink(JSON.parse(data));
         });
+        Socket.on('session-save', function(data){
+            console.log('session-save: ' + data);
+        });
+        Socket.on('node-save', function(data){
+            console.log('node-save: ' + data);
+            NodeChart.addNode(data);
+        });
+        Socket.on('link-save', function(data){
+            console.log('link-save: ' + data);
+            var link = data;
+            NodeChart.addLink(link.from_node_id, link.to_node_id);
+        });
     };
 
 
