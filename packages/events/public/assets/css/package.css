@@ -69,7 +69,8 @@ div.name {
   line-height: 55px;
 }
 
-.eventChartTooltip {
+.eventChartTooltip,
+.chartTooltip {
   position: absolute;
   width: 150px;
   padding: 8px;
@@ -159,12 +160,4 @@ div.name {
 #nodesChart .link {
   stroke: #666;
   stroke-width: 1.5px;
-}
-
-body {
-  background: #000;
-}
-
-body.connected {
-  background: #443344;
 }

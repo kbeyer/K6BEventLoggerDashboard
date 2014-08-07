@@ -14,6 +14,11 @@ var mongoose = require('mongoose'),
  * Represents a device known to MCSession
  */
 var NodeSchema = new Schema({
+  //
+  // TODO: custom primary key name
+  // OR store generated ID in app via response 
+  //
+
     created: {
         type: Date,
         default: Date.now
@@ -24,8 +29,12 @@ var NodeSchema = new Schema({
         ref: 'Session'
     },
     node_id: String,
-    display_name: String,
-    state: String,
+    displayName: String,
+    stateText: String,
+    lastHeartbeatSentFromPeerAt: Date,
+    lastHeartbeatReceivedFromPeerAt: Date,
+    lastHeartbeatSentToPeerAt: Date,
+    timeLatencySamples: Array,
     meta: Object
 });
 

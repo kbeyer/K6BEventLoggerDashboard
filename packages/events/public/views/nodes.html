@@ -1,8 +1,9 @@
 
 <section data-ng-controller="NodesController" data-ng-init="init()">
 
+  <h4 class="socket-status">{{connected ? 'Online' : 'Offline'}}</h4>
   <button ng-click="nodeButtonClick()">New node</button>
-  <button ng-click="linkButtonClick()">{{$scope.status[0] === 'link' ? 'Stop Linking' : 'Link'}}</button>
+  <button ng-click="linkButtonClick()">{{status[0] === 'link' ? 'Stop Linking' : 'Link'}}</button>
   <button ng-click="messageButtonClick()"
           ng-disabled="$scope.status[0] === 'message'">Message</button>
   

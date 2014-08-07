@@ -8,6 +8,9 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
     //var fill = d3.scale.category20();
     var force, nodes, links, node, link, cursor, d3Delegates, d3SelectedElement;
 
+    var keyFn = function(d){ return d.id; };
+    
+
     function findnode(id){
         return nodes.filter(function(node){
             return node.id===id;
@@ -33,8 +36,9 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
 
     var exposed = {
         addNode: function(d) {
-            d.id = d.id || d.node_id;
-            
+            d.id = d.id || d._id;
+
+
             for(var i=0; i<nodes.length; i++){
                 if(nodes[i].id === d.id){
                     console.log('node ' + d.id + ' already exists, not adding');
@@ -45,7 +49,7 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
             console.log('adding node '+ d);
             var randomX = Math.floor(Math.random()*$('svg').width());
             var randomY = Math.floor(Math.random()*$('svg').height());
-            nodes.push({x: randomX, y: randomY, id: d.id});
+            nodes.push({x: randomX, y: randomY, id: d.id, data: d});
             exposed.refresh();
             return node;
         },
@@ -60,7 +64,7 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
                 return;
             }
             console.log('adding link ' + source_id + ' => ' + target_id);
-            links.push({source: source, target: target});
+            links.push({id: source_id + target_id, source: source, target: target});
             exposed.refresh();
         },
         select: function(d) {
@@ -73,18 +77,24 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
         },
         // refresh chart from data
         refresh: function(data) {
-            link = link.data(links);
+            link = link.data(links, keyFn);
 
             link.enter().insert('line', '.node')
                 .attr('class', 'link');
 
-            node = node.data(nodes);
+            node = node.data(nodes, keyFn);
 
             node.enter().insert('circle', '.cursor')
                 .attr('class', 'node')
                 .attr('r', 10)
+                .attr('data-id', keyFn)
                 .on('mousedown', d3Delegates.click)
+                .on('mouseover', d3Delegates.mouseover)
+                .on('mouseout', d3Delegates.mouseout)
                 .call(force.drag);
+
+            node.exit()
+                .remove();
 
             force.start();
 
