@@ -45,7 +45,7 @@ var NodeSchema = new Schema({
  */
 NodeSchema.pre('save', function(next) {
     this.updated = Date.now;
-    console.log('NodeSchema preSave');
+    //console.log('NodeSchema preSave');
     next();
 });
 /**
@@ -53,7 +53,7 @@ NodeSchema.pre('save', function(next) {
  */
 NodeSchema.post('save', function(next) {
     this.mongoID = this._id;
-    console.log('mongoID after save: ' + this.mongoID);
+    //console.log('mongoID after save: ' + this.mongoID);
     socketManager.emit('node-save', this);
 });
 

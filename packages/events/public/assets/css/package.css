@@ -72,7 +72,7 @@ div.name {
 .eventChartTooltip,
 .chartTooltip {
   position: absolute;
-  width: 150px;
+  width: 350px;
   padding: 8px;
   font: 12px sans-serif;
   background: #aaa;
