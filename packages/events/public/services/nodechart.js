@@ -36,12 +36,14 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
 
     var exposed = {
         addNode: function(d) {
-            d.id = d.id || d._id;
+            d.id = d.id || d.playerID;
 
 
             for(var i=0; i<nodes.length; i++){
                 if(nodes[i].id === d.id){
-                    console.log('node ' + d.id + ' already exists, not adding');
+                    console.log('node ' + d.id + ' already exists, updating');
+                    nodes[i].data = d;
+                    exposed.refresh();
                     return;
                 }
             }

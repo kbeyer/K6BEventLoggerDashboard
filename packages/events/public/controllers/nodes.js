@@ -30,7 +30,15 @@ angular.module('mean.events').controller('NodesController',
                 .html(
                     '<u>' + timeFormat(d.data.updated) +
                     '</u>'+
-                    '<p>' + d.data.displayName + ' (' + d.data.stateText + ')</p>')
+                    '<ul>' +
+                      '<li>Name: ' + d.data.displayName + '</li>' +
+                      '<li>State: ' + d.data.state + '</li>' +
+                      '<li>lastHeartbeatSentFromPeerAt: ' + d.data.lastHeartbeatSentFromPeerAt + '</li>' +
+                      '<li>lastHeartbeatReceivedFromPeerAt: ' + d.data.lastHeartbeatReceivedFromPeerAt + '</li>' +
+                      '<li>lastHeartbeatSentToPeerAt: ' + d.data.lastHeartbeatSentToPeerAt + '</li>' +
+                      '<li>StateText: ' + d.data.stateText + '</li>' +
+                      '<li>PlayerID: ' + d.data.playerID + '</li>' +
+                    '</ul>')
                 .style('left', leftPos + 'px')
                 .style('top', (d3.event.pageY + 5) + 'px')
                 .transition().duration(300)
@@ -93,7 +101,7 @@ angular.module('mean.events').controller('NodesController',
         Socket.on('node-save', function(data){
             console.log('node-save: ' + JSON.stringify(data));
             // TODO: parse all dates
-            if (!data.udpated) { data.updated = new Date(); }
+            if (!data.updated) { data.updated = new Date(); }
             else { data.updated = new Date(data.updated); }
 
             NodeChart.addNode(data);

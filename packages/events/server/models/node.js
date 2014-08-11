@@ -28,7 +28,8 @@ var NodeSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Session'
     },
-    node_id: String,
+    mongoID: String,
+    playerID: String,
     displayName: String,
     stateText: String,
     lastHeartbeatSentFromPeerAt: Date,
@@ -38,14 +39,22 @@ var NodeSchema = new Schema({
     meta: Object
 });
 
+
 /** 
  * Before save
  */
 NodeSchema.pre('save', function(next) {
     this.updated = Date.now;
     console.log('NodeSchema preSave');
-    socketManager.emit('node-save', this);
     next();
+});
+/**
+ * After save
+ */
+NodeSchema.post('save', function(next) {
+    this.mongoID = this._id;
+    console.log('mongoID after save: ' + this.mongoID);
+    socketManager.emit('node-save', this);
 });
 
 mongoose.model('Node', NodeSchema);
