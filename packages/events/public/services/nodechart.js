@@ -9,7 +9,9 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
     var force, nodes, links, node, link, cursor, d3Delegates, d3SelectedElement;
 
     var keyFn = function(d){ return d.id; };
-    
+    var nodeClassFn = function(d) {
+        return 'node' + ' state-' + (d.data.state || 0);
+    };
 
     function findnode(id){
         return nodes.filter(function(node){
@@ -44,21 +46,21 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
                     console.log('node ' + d.id + ' already exists, updating');
                     nodes[i].data = d;
                     exposed.refresh();
-                    return;
+                    return nodes[i];
                 }
             }
 
-            console.log('adding node '+ d);
+            console.log('adding node '+ d.id);
             var randomX = Math.floor(Math.random()*$('svg').width());
             var randomY = Math.floor(Math.random()*$('svg').height());
             nodes.push({x: randomX, y: randomY, id: d.id, data: d});
             exposed.refresh();
-            return node;
+            return nodes[nodes.length-1];
         },
         addLink: function (source_id, target_id) {
             // find or create nodes
-            var source = findnode(source_id)[0] || exposed.addNode(source_id);
-            var target = findnode(target_id)[0] || exposed.addNode(target_id);
+            var source = findnode(source_id)[0] || exposed.addNode({playerID: source_id, state: 0});
+            var target = findnode(target_id)[0] || exposed.addNode({playerID: target_id, state: 0});
 
             // find or create source and target node
             if(findlink(source_id,target_id).length){
@@ -86,8 +88,16 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
 
             node = node.data(nodes, keyFn);
 
+            node.transition()
+                .attr('class', nodeClassFn)
+                .transition().duration(300)
+                .style('opacity', 0.8)
+                .style('fill', 'rgba(92,184,92,0.8)')
+                .transition().duration(1000)
+                .style('fill', '#eee');
+
             node.enter().insert('circle', '.cursor')
-                .attr('class', 'node')
+                .attr('class', nodeClassFn)
                 .attr('r', 10)
                 .attr('data-id', keyFn)
                 .on('mousedown', d3Delegates.click)

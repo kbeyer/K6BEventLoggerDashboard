@@ -33,7 +33,7 @@ angular.module('mean.events').controller('NodesController',
                     '<ul>' +
                       '<li>Name: ' + d.data.displayName + '</li>' +
                       '<li>State: ' + d.data.state + '</li>' +
-                      '<li>lastHeartbeatSentFromPeerAt: ' + d.data.lastHeartbeatSentFromPeerAt + '</li>' +
+                      '<li>lastHeartbeatSentFromPeerAt: ' + timeFormat(new Date(d.data.lastHeartbeatSentFromPeerAt)) + '</li>' +
                       '<li>lastHeartbeatReceivedFromPeerAt: ' + d.data.lastHeartbeatReceivedFromPeerAt + '</li>' +
                       '<li>lastHeartbeatSentToPeerAt: ' + d.data.lastHeartbeatSentToPeerAt + '</li>' +
                       '<li>StateText: ' + d.data.stateText + '</li>' +

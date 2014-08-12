@@ -149,7 +149,33 @@ div.name {
 
 #nodesChart .node {
   fill: #aaa;
+  stroke-width: 2;
 }
+#nodesChart .node.state-0 { /*discovered*/
+  stroke: yellow;
+}
+#nodesChart .node.state-1 { /*invited*/
+  stroke: blue;
+}
+#nodesChart .node.state-2 { /*invite accepted*/
+  stroke: purple;
+}
+#nodesChart .node.state-3 { /*invite declined*/
+  stroke: red;
+}
+#nodesChart .node.state-4 { /*time sync*/
+  stroke: blue;
+}
+#nodesChart .node.state-5 { /*connected*/
+  stroke: green;
+}
+#nodesChart .node.state-6 { /*stale*/
+  stroke: orange;
+}
+#nodesChart .node.state-7 { /*disconnected*/
+  stroke: red;
+}
+
 
 #nodesChart .cursor {
   fill: none;
