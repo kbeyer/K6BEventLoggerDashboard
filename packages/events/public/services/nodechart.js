@@ -10,7 +10,7 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
 
     var keyFn = function(d){ return d.id; };
     var nodeClassFn = function(d) {
-        return 'node' + ' state-' + (d.data.state || 0);
+        return 'node' + ' state-' + (d.data.state || 0) + (d.isSessionCreator ? ' creator' : '');
     };
 
     function findnode(id){
@@ -44,8 +44,15 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
             for(var i=0; i<nodes.length; i++){
                 if(nodes[i].id === d.id){
                     console.log('node ' + d.id + ' already exists, updating');
+                    var doPulse = false;
+                    if (d.lastHeartbeatSentToPeerAt > nodes[i].data.lastHeartbeatSentToPeerAt) {
+                        doPulse = true;
+                    }
                     nodes[i].data = d;
                     exposed.refresh();
+                    
+                    if (doPulse) { exposed.pulseNode(d.id); }
+
                     return nodes[i];
                 }
             }
@@ -71,6 +78,13 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
             links.push({id: source_id + target_id, source: source, target: target});
             exposed.refresh();
         },
+        pulseNode: function(id) {
+            var d3box = d3.select('[data-id="' + id + '"]');
+            d3box.transition(300)
+                .style('fill', 'rgba(91,192,222,0.8)')
+                .transition().duration(1000)
+                .style('fill', '#eee');
+        },
         select: function(d) {
             if (d3SelectedElement) {
                 d3SelectedElement.classed({'selected': false});
@@ -91,10 +105,7 @@ angular.module('mean.events').factory('NodeChart', ['$rootScope', function($root
             node.transition()
                 .attr('class', nodeClassFn)
                 .transition().duration(300)
-                .style('opacity', 0.8)
-                .style('fill', 'rgba(92,184,92,0.8)')
-                .transition().duration(1000)
-                .style('fill', '#eee');
+                .style('opacity', 0.8);
 
             node.enter().insert('circle', '.cursor')
                 .attr('class', nodeClassFn)

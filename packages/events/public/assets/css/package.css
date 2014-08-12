@@ -175,7 +175,10 @@ div.name {
 #nodesChart .node.state-7 { /*disconnected*/
   stroke: red;
 }
-
+#nodesChart .node.creator {
+  stroke: black;
+  fill: #aaa;
+}
 
 #nodesChart .cursor {
   fill: none;

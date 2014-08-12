@@ -33,9 +33,9 @@ angular.module('mean.events').controller('NodesController',
                     '<ul>' +
                       '<li>Name: ' + d.data.displayName + '</li>' +
                       '<li>State: ' + d.data.state + '</li>' +
-                      '<li>lastHeartbeatSentFromPeerAt: ' + timeFormat(new Date(d.data.lastHeartbeatSentFromPeerAt)) + '</li>' +
-                      '<li>lastHeartbeatReceivedFromPeerAt: ' + d.data.lastHeartbeatReceivedFromPeerAt + '</li>' +
-                      '<li>lastHeartbeatSentToPeerAt: ' + d.data.lastHeartbeatSentToPeerAt + '</li>' +
+                      '<li>lastHeartbeatSentFromPeerAt: ' + timeFormat(d.data.lastHeartbeatSentFromPeerAt) + '</li>' +
+                      '<li>lastHeartbeatReceivedFromPeerAt: ' + timeFormat(d.data.lastHeartbeatReceivedFromPeerAt) + '</li>' +
+                      '<li>lastHeartbeatSentToPeerAt: ' + timeFormat(d.data.lastHeartbeatSentToPeerAt) + '</li>' +
                       '<li>StateText: ' + d.data.stateText + '</li>' +
                       '<li>PlayerID: ' + d.data.playerID + '</li>' +
                     '</ul>')
@@ -103,6 +103,10 @@ angular.module('mean.events').controller('NodesController',
             // TODO: parse all dates
             if (!data.updated) { data.updated = new Date(); }
             else { data.updated = new Date(data.updated); }
+
+            if (data.lastHeartbeatSentFromPeerAt !== null) { data.lastHeartbeatSentFromPeerAt = new Date(data.lastHeartbeatSentFromPeerAt); }
+            if (data.lastHeartbeatSentToPeerAt !== null) { data.lastHeartbeatSentToPeerAt = new Date(data.lastHeartbeatSentToPeerAt); }
+            if (data.lastHeartbeatReceivedFromPeerAt !== null) { data.lastHeartbeatReceivedFromPeerAt = new Date(data.lastHeartbeatReceivedFromPeerAt); }
 
             NodeChart.addNode(data);
         });
