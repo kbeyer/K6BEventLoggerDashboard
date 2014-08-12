@@ -18,7 +18,9 @@ angular.module('mean.events').controller('NodesController',
     };
 
     var d3TooltipSelector = '.chartTooltip';
-    var timeFormat = d3.time.format('%H:%M:%S.%L');
+    var timeFormat = function(dt) {
+        return dt ? d3.time.format('%H:%M:%S.%L')(dt) : 'na';
+    };
 
     var d3ChartDelegates = {
         mouseover: function(d){

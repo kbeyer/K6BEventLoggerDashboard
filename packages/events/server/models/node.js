@@ -30,6 +30,7 @@ var NodeSchema = new Schema({
     },
     mongoID: String,
     playerID: String,
+    isSessionCreator: Boolean,
     displayName: String,
     stateText: String,
     lastHeartbeatSentFromPeerAt: Date,
